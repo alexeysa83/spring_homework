@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--    UnitBaseDao bean-->
+    <bean id="defaultUnitDao" class="com.github.alexeysa83.spring.repository.impl.DefaultUnitDao">
+        <constructor-arg index="0" value="10"/>
+    </bean>
+
+    <!--    UnitBaseService primary bean-->
+    <bean id="unitBaseService" class="com.github.alexeysa83.spring.service.impl.DefaultUnitService" primary="true">
+        <constructor-arg value="XML_WARRIOR"/>
+        <constructor-arg ref="defaultUnitDao"/>
+
+<!--        DefaultUnitService must contain default constructor and setters-->
+
+<!--        <property name="dao" ref="defaultUnitDao"/>-->
+<!--        <property name="unitName" value="XML_WARRIOR"/>-->
+    </bean>
+
+    <!--    UnitBaseService secondary bean-->
+    <bean id="unit2" class="com.github.alexeysa83.spring.service.impl.DefaultUnitService">
+        <constructor-arg ref="defaultUnitDao"/>
+        <constructor-arg type="java.lang.String" value="ANOTHER_XML_WARRIOR"/>
+    </bean>
+</beans>
