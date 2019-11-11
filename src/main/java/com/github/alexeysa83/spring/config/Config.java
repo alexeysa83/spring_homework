@@ -18,7 +18,7 @@ public class Config {
 
     @Bean
     @Primary
-    public UnitBaseService unitBaseService(UnitBaseDao unitBaseDao) {
+    public UnitBaseService javaConfig(UnitBaseDao unitBaseDao) {
         return new DefaultUnitService(unitBaseDao, "JAVA_WARRIOR");
     }
 
@@ -40,7 +40,7 @@ public class Config {
      */
     @Bean
     @Qualifier(value = "secondService")
-    public UnitBaseService unitBaseService2(UnitBaseDao unitBaseDao) {
+    public UnitBaseService anotherJavaConfig(UnitBaseDao unitBaseDao) {
         return new DefaultUnitService(unitBaseDao, "ANOTHER_JAVA_WARRIOR");
     }
 

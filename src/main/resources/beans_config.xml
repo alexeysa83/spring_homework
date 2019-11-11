@@ -10,7 +10,7 @@
     </bean>
 
     <!--    UnitBaseService primary bean-->
-    <bean id="unitBaseService" class="com.github.alexeysa83.spring.service.impl.DefaultUnitService" primary="true">
+    <bean id="xmlConfig" class="com.github.alexeysa83.spring.service.impl.DefaultUnitService" primary="true">
         <constructor-arg value="XML_WARRIOR"/>
         <constructor-arg ref="defaultUnitDao"/>
 
@@ -21,7 +21,7 @@
     </bean>
 
     <!--    UnitBaseService secondary bean-->
-    <bean id="unit2" class="com.github.alexeysa83.spring.service.impl.DefaultUnitService">
+    <bean id="anotherXmlConfig" class="com.github.alexeysa83.spring.service.impl.DefaultUnitService">
         <constructor-arg ref="defaultUnitDao"/>
         <constructor-arg type="java.lang.String" value="ANOTHER_XML_WARRIOR"/>
     </bean>
