@@ -1,51 +1,51 @@
 package com.github.alexeysa83.spring.config;
 
-import com.github.alexeysa83.spring.repository.UnitBaseDao;
-import com.github.alexeysa83.spring.repository.impl.DefaultUnitDao;
-import com.github.alexeysa83.spring.service.impl.DefaultUnitService;
-import com.github.alexeysa83.spring.service.UnitBaseService;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.github.alexeysa83.spring.repository.BaseDao;
+import com.github.alexeysa83.spring.repository.impl.DefaultDao;
+import com.github.alexeysa83.spring.service.BaseService;
+import com.github.alexeysa83.spring.service.impl.DefaultBaseService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.annotation.Order;
 
-/**
- * Where is allocated config class?
- */
+import java.util.Map;
 
 @Configuration
+@PropertySource("classpath:app.properties")
 public class Config {
 
     @Bean
-    @Primary
-    public UnitBaseService javaConfig(UnitBaseDao unitBaseDao) {
-        return new DefaultUnitService(unitBaseDao, "JAVA_WARRIOR");
+    @Order(1)
+    public BaseService javaService(BaseDao baseDao) {
+        return new DefaultBaseService(baseDao, "JAVA_SERVICE");
     }
 
+    @Bean("anotherJavaService")
+    @Order(0)
+    public BaseService blabla(BaseDao baseDao) {
+        return new DefaultBaseService(baseDao, "ANOTHER_JAVA_SERVICE");
+    }
 
     /**
-     * The same config
+     * Инжект из проперти файла разными способами: инжект поля и параметра метода
      */
-//    @Bean
-//    @Primary
-//    public UnitBaseService unitBaseService () {
-//        return new DefaultUnitService(unitBaseDao(), "JAVA_WARRIOR");
-//    }
+    @Value("#{${names}}")
+    private Map <String, String > names;
 
-    /**
-     * Qualifier doesn't work?
-     * This annotation may be used on a field or parameter as a qualifier for
-     * candidate beans when autowiring. It may also be used to annotate other
-     * custom annotations that can then in turn be used as qualifiers.
-     */
     @Bean
-    @Qualifier(value = "secondService")
-    public UnitBaseService anotherJavaConfig(UnitBaseDao unitBaseDao) {
-        return new DefaultUnitService(unitBaseDao, "ANOTHER_JAVA_WARRIOR");
+    public BaseService propertyService(BaseDao baseDao, @Value("#{${names}.key1}") String name) {
+        return new DefaultBaseService(baseDao, name);
     }
 
     @Bean
-    public UnitBaseDao unitBaseDao() {
-        return new DefaultUnitDao(100);
+    public BaseService anotherPropertyService(BaseDao baseDao) {
+        return new DefaultBaseService(baseDao, names.get("key2"));
+    }
+
+    @Bean
+    public BaseDao dao() {
+        return new DefaultDao();
     }
 }
